@@ -1,0 +1,16 @@
+version: '2'
+services:
+  tracker-server:
+    image: beaock/nginx-fastdfs
+    network_mode: "host"
+    command: "./tracker.sh"
+
+  storage-server:
+    image: beaock/nginx-fastdfs
+    volumes:
+      - "./docker/storage_base_path:/data/fast_data"
+    environment:
+      TRACKER_SERVER: "192.168.1.6:22122" <注意这里要改成自己tracker server的地址>
+      GROUP_NAME: "M00"
+    network_mode: "host"
+    command: "./storage.sh"
