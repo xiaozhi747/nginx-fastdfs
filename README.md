@@ -80,7 +80,7 @@ M00/00/00/wKgBBl7BOquASt2LAAAWdydAsEA756.jpg
 
 6. 通过nginx访问上传的图片
 
-![image-20200517222358961](assets\image-20200517222358961.png)
+![image-20200517222358961](https://github.com/xiaozhi747/nginx-fastdfs/blob/master/assets/image-20200517222358961.png)
 
 
 
@@ -106,7 +106,7 @@ M00/00/00/wKgBBl7BOquASt2LAAAWdydAsEA756.jpg
 ACTIVE
 ```
 
-![image-20200517224142883](assets\image-20200517224142883.png)
+![image-20200517224142883](https://github.com/xiaozhi747/nginx-fastdfs/blob/master/assets/image-20200517224142883.png)
 
 ### 查看TRACKER_SERVER容器ip地址的方法
 
