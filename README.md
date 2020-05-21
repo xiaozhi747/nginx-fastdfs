@@ -91,13 +91,13 @@ M00/00/00/wKgBBl7BOquASt2LAAAWdydAsEA756.jpg
 执行下面命令让配置生效
 
 ```
-/usr/local/fdfs_monitor /etc/fdfs/client.conf
+/usr/bin/fdfs_storaged /etc/fdfs/storage.conf
 ```
 
 重新查看状态
 
 ```
-/usr/local/fdfs_monitor /etc/fdfs/client.conf
+/usr/bin/fdfs_monitor /etc/fdfs/client.conf
 ```
 
 正常应为：
