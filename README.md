@@ -6,32 +6,44 @@
 
 > git clone https://github.com/xiaozhi747/nginx-fastdfs.git
 
-3. 修改docker-compose文件里面的TRACKER_SERVER ip地址
+3. 利用 Dokcerfile 构建镜像
 
-```
-version: '2'
-services:
-  tracker-server:
-    image: beaock/nginx-fastdfs
-    network_mode: "host"
-    command: "./tracker.sh" 
- 
-  storage-server:
-    image: beaock/nginx-fastdfs
-    volumes:
-      - "./docker/storage_base_path:/data/fast_data"
-    environment:
-      TRACKER_SERVER: "192.168.65.3:22122" <注意这里要改成自己tracker server的地址>
-      GROUP_NAME: "M00"
-    network_mode: "host"
-    command: "./storage.sh"
-  
+```shell script
+docker build -t nginx-fastdfs:lz .
 ```
 
 4. 执行 `docker-compose up` 命令
 
-5. 执行java代码测试环境搭建是否成功
+5. 执行java代码测试环境搭建是否成功（我自己的环境是基于springcloud搭建的）
 
+配置文件 application.yml （根据自己需求修改）
+```yaml
+server:
+  port: 8082
+spring:
+  application:
+    name: upload-service
+  servlet:
+    multipart:
+      max-file-size: 5MB # 限制文件上传的大小
+# Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 5 # 每隔5秒发送一次心跳
+    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
+fdfs:
+  so-timeout: 1501 # 超时时间
+  connect-timeout: 601 # 连接超时时间
+  thumb-image: # 缩略图
+    width: 60
+    height: 60
+  tracker-list: # tracker地址：你的虚拟机服务器地址+端口（默认是22122）
+    - 172.19.0.3:22122
+```
+测试代码：
 ```java
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.domain.ThumbImageConfig;
@@ -109,7 +121,9 @@ ACTIVE
 ![image-20200517224142883](https://github.com/xiaozhi747/nginx-fastdfs/blob/master/assets/image-20200517224142883.png)
 
 ### 查看TRACKER_SERVER容器ip地址的方法
+新： docker inspect 命令查看即可
 
+旧：
 1. 进入tracker容器内部
 
 > docker exec -i -t <tracker容器的名字> /bin/bash

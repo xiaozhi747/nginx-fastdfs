@@ -1,16 +1,30 @@
 version: '2'
 services:
   tracker-server:
-    image: beaock/nginx-fastdfs
-    network_mode: "host"
+    image: nginx-fastdfs:lz
+    #    network_mode: "host"
+    networks:
+      mynet1:
+        ipv4_address: 172.19.0.3
     command: "./tracker.sh"
 
   storage-server:
-    image: beaock/nginx-fastdfs
+    image: nginx-fastdfs:lz
     volumes:
       - "./docker/storage_base_path:/data/fast_data"
     environment:
-      TRACKER_SERVER: "192.168.1.6:22122" <注意这里要改成自己tracker server的地址>
+      TRACKER_SERVER: "172.19.0.3:22122"
       GROUP_NAME: "M00"
-    network_mode: "host"
+      TRACKER_IP: "172.19.0.3:22122"
+      #    network_mode: "host"
+    networks:
+      mynet1:
+        ipv4_address: 172.19.0.2
     command: "./storage.sh"
+# 创建网络，以固定容器创建时的ip地址
+networks:
+  mynet1:
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
+  ~
